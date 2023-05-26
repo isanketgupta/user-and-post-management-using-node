@@ -1,5 +1,6 @@
 const express = require('express');
-const { body } = require('express-validator/check');
+// const { body } = require('express-validator/check');
+const { check, validationResult } = require('express-validator');
 
 const User = require('../models/user');
 const authController = require('../controllers/auth');
@@ -9,9 +10,9 @@ const router = express.Router();
 router.put(
   '/signup',
   [
-    body('email')
-      .isEmail()
-      .withMessage('Please enter a valid email.')
+    check('email')
+      // .isEmail()
+      // .withMessage('Please enter a valid email.')
       .custom((value, { req }) => {
         return User.findOne({ email: value }).then(userDoc => {
           if (userDoc) {
@@ -20,10 +21,10 @@ router.put(
         });
       })
       .normalizeEmail(),
-    body('password')
+    check('password')
       .trim()
       .isLength({ min: 5 }),
-    body('name')
+    check('name')
       .trim()
       .not()
       .isEmpty()
@@ -34,8 +35,8 @@ router.put(
 router.post(
     '/login',
     [
-        body('email').trim().not().isEmpty(),
-        body('password').trim().not().isEmpty()
+        check('email').trim().not().isEmpty(),
+        check('password').trim().not().isEmpty()
     ],
     authController.login
     );

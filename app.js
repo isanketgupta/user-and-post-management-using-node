@@ -18,6 +18,7 @@ app.use((req, res, next) => {
     'OPTIONS, GET, POST, PUT, PATCH, DELETE'
   );
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  console.log('request proccessing')
   next();
 });
 
@@ -34,9 +35,10 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    'mongodb+srv://maximilian:9u4biljMQc4jjqbe@cluster0-ntrwp.mongodb.net/messages?retryWrites=true'
+    'mongodb+srv://user2:LTHA8PaU7rYCFzFY@cluster0.l8xmgxg.mongodb.net/newShop'
   )
   .then(result => {
+    console.log('connected')
     app.listen(8080);
   })
   .catch(err => console.log(err));

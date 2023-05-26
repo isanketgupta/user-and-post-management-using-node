@@ -18,14 +18,12 @@ const postSchema = new Schema(
     },
     location: {
         latitude: {
-                type: Schema.Types.ObjectId,
-                ref: 'User',
+                type: String,
                 required: true
             },
         longitude: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            required: true
+                type: String,
+                required: true
         }
     },
     active: Boolean,

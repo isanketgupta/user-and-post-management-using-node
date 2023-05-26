@@ -1,38 +1,46 @@
 const express = require('express');
-const { body } = require('express-validator/check');
-
+// const { body } = require('express-validator/check');
+const { check, validationResult } = require('express-validator');
 const feedController = require('../controllers/feed');
 const isAuth = require('../middleware/is-auth');
 
 const router = express.Router();
 
-// GET /feed/posts
-router.get('/posts', isAuth, feedController.getPosts);
+router.get('/getPosts', isAuth, feedController.getPosts);
 
-// POST /feed/post
+router.get('/getPostCount', isAuth, feedController.getPostCount);
+
 router.post(
   '/post',
   isAuth,
   [
-    body('title').trim().not().isEmpty(),
-    body('Body').trim().not().isEmpty(),
-    body('active').isBoolean().withMessage('active must be a boolean value'),
-    body('latitude').trim().not().isEmpty(),
-    body('longitude').trim().not().isEmpty(),
+    check('title').trim().not().isEmpty(),
+    check('Body').trim().not().isEmpty(),
+    check('active').isBoolean().withMessage('active must be a boolean value'),
+    check('latitude').trim().not().isEmpty(),
+    check('longitude').trim().not().isEmpty(),
   ],
   feedController.createPost
 );
 
-router.get('/post/:postId', isAuth, feedController.getPost);
+router.post(
+    '/getByLocation',
+    [
+        check('latitude').trim().not().isEmpty(),
+        check('longitude').trim().not().isEmpty(),
+    ], 
+    isAuth, 
+    feedController.getByLocation
+    );
 
 router.put(
-  '/post/:postId',
+  '/updatePost/:postId',
   isAuth,
   [
-    body('title')
+    check('title')
       .trim()
       .isLength({ min: 5 }),
-    body('Body')
+    check('Body')
       .trim()
       .isLength({ min: 5 })
   ],
