@@ -26,7 +26,7 @@ app.use('/feed', feedRoutes);
 app.use('/auth', authRoutes);
 
 app.use((error, req, res, next) => {
-  console.log(error);
+  console.log(JSON.stringify({message: error.message, errorStackTrace: error.stack, status: error.statusCode }));
   const status = error.statusCode || 500;
   const message = error.message;
   const data = error.data;
